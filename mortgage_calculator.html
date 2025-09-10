@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏠 Mortgage Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .col {
+            flex: 1;
+        }
+        
+        .section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #4facfe;
+        }
+        
+        .section h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+        
+        .radio-group {
+            margin-bottom: 15px;
+        }
+        
+        .radio-group label {
+            display: inline-block;
+            margin-right: 20px;
+            font-weight: normal;
+        }
+        
+        .results {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+        
+        .results h3 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.5em;
+        }
+        
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .metric {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .summary-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .summary-section h4 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .summary-section p {
+            margin-bottom: 8px;
+            color: #666;
+        }
+        
+        .tips {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #2196f3;
+        }
+        
+        .tips h4 {
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
+        
+        .tips ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .tips li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+        
+        .tips li:before {
+            content: "• ";
+            color: #2196f3;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .row {
+                flex-direction: column;
+            }
+            
+            .summary {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 Mortgage Calculator</h1>
+            <p>Calculate your monthly mortgage payment, including estimated insurance and property tax.</p>
+        </div>
+        
+        <div class="content">
+            <div class="row">
+                <div class="col">
+                    <div class="section">
+                        <h3>📊 Property Details</h3>
+                        
+                        <div class="form-group">
+                            <label for="homePrice">Home Price ($)</label>
+                            <input type="number" id="homePrice" value="1500000" min="0" step="10000">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="downPayment">Down Payment ($)</label>
+                            <input type="number" id="downPayment" value="600000" min="0" step="10000">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Loan Amount</label>
+                            <div id="loanAmount" style="font-size: 1.2em; font-weight: bold; color: #4facfe; padding: 12px; background: #f0f8ff; border-radius: 8px;">$900,000</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="interestRate">Annual Interest Rate (%)</label>
+                            <input type="number" id="interestRate" value="6.50" min="0" max="20" step="0.01">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loanTerm">Loan Term</label>
+                            <select id="loanTerm">
+                                <option value="15">15 years</option>
+                                <option value="20">20 years</option>
+                                <option value="30" selected>30 years</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col">
+                    <div class="section">
+                        <h3>💰 Additional Costs</h3>
+                        
+                        <div class="form-group">
+                            <div class="radio-group">
+                                <label><input type="radio" name="insuranceOption" value="percentage" checked> Use percentage of home price</label>
+                                <label><input type="radio" name="insuranceOption" value="amount"> Enter annual amount</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" id="insurancePercentageGroup">
+                            <label for="insurancePercentage">Insurance (% of home price)</label>
+                            <input type="number" id="insurancePercentage" value="0.5" min="0.1" max="2.0" step="0.01">
+                        </div>
+                        
+                        <div class="form-group" id="insuranceAmountGroup" style="display: none;">
+                            <label for="insuranceAmount">Annual Insurance ($)</label>
+                            <input type="number" id="insuranceAmount" value="2500" min="0" step="100">
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="radio-group">
+                                <label><input type="radio" name="taxOption" value="percentage" checked> Use percentage of home price</label>
+                                <label><input type="radio" name="taxOption" value="amount"> Enter annual amount</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" id="taxPercentageGroup">
+                            <label for="taxPercentage">Property Tax (% of home price)</label>
+                            <input type="number" id="taxPercentage" value="1.25" min="0.1" max="3.0" step="0.01">
+                        </div>
+                        
+                        <div class="form-group" id="taxAmountGroup" style="display: none;">
+                            <label for="taxAmount">Annual Property Tax ($)</label>
+                            <input type="number" id="taxAmount" value="5000" min="0" step="100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="results">
+                <h3>📈 Monthly Payment Breakdown</h3>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-value" id="mortgagePayment">$5,682</div>
+                        <div class="metric-label">Mortgage Payment<br>(Principal + Interest)</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="insuranceMonthly">$625</div>
+                        <div class="metric-label">Insurance<br>(Monthly)</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="taxMonthly">$1,563</div>
+                        <div class="metric-label">Property Tax<br>(Monthly)</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="totalMonthly">$7,870</div>
+                        <div class="metric-label">Total Monthly<br>(All costs combined)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="summary">
+                <div class="summary-section">
+                    <h4>📋 Summary</h4>
+                    <p><strong>Home Price:</strong> <span id="summaryHomePrice">$1,500,000</span></p>
+                    <p><strong>Down Payment:</strong> <span id="summaryDownPayment">$600,000</span> (<span id="downPaymentPercent">40.0</span>%)</p>
+                    <p><strong>Loan Amount:</strong> <span id="summaryLoanAmount">$900,000</span></p>
+                    <p><strong>Interest Rate:</strong> <span id="summaryInterestRate">6.50</span>%</p>
+                    <p><strong>Loan Term:</strong> <span id="summaryLoanTerm">30</span> years</p>
+                </div>
+                
+                <div class="tips">
+                    <h4>💡 Tips</h4>
+                    <ul>
+                        <li>Down payment of 20% or more avoids PMI</li>
+                        <li>Property tax rates vary by location</li>
+                        <li>Insurance costs depend on coverage and location</li>
+                        <li>Consider additional costs like HOA fees</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateMortgage(loanAmount, interestRate, loanTermYears) {
+            const nPayments = loanTermYears * 12;
+            const monthlyRate = interestRate / 100 / 12;
+            
+            if (monthlyRate > 0) {
+                return loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, nPayments)) / (Math.pow(1 + monthlyRate, nPayments) - 1);
+            } else {
+                return loanAmount / nPayments;
+            }
+        }
+        
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        function updateCalculations() {
+            const homePrice = parseFloat(document.getElementById('homePrice').value) || 0;
+            const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+            const loanAmount = Math.max(0, homePrice - downPayment);
+            const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+            const loanTerm = parseInt(document.getElementById('loanTerm').value) || 30;
+            
+            // Insurance calculation
+            let insuranceAnnual;
+            if (document.querySelector('input[name="insuranceOption"]:checked').value === 'percentage') {
+                const insurancePercentage = parseFloat(document.getElementById('insurancePercentage').value) || 0;
+                insuranceAnnual = homePrice * (insurancePercentage / 100);
+            } else {
+                insuranceAnnual = parseFloat(document.getElementById('insuranceAmount').value) || 0;
+            }
+            
+            // Tax calculation
+            let taxAnnual;
+            if (document.querySelector('input[name="taxOption"]:checked').value === 'percentage') {
+                const taxPercentage = parseFloat(document.getElementById('taxPercentage').value) || 0;
+                taxAnnual = homePrice * (taxPercentage / 100);
+            } else {
+                taxAnnual = parseFloat(document.getElementById('taxAmount').value) || 0;
+            }
+            
+            // Calculate payments
+            const mortgagePayment = calculateMortgage(loanAmount, interestRate, loanTerm);
+            const insuranceMonthly = insuranceAnnual / 12;
+            const taxMonthly = taxAnnual / 12;
+            const totalMonthly = mortgagePayment + insuranceMonthly + taxMonthly;
+            
+            // Update display
+            document.getElementById('loanAmount').textContent = formatCurrency(loanAmount);
+            document.getElementById('mortgagePayment').textContent = formatCurrency(mortgagePayment);
+            document.getElementById('insuranceMonthly').textContent = formatCurrency(insuranceMonthly);
+            document.getElementById('taxMonthly').textContent = formatCurrency(taxMonthly);
+            document.getElementById('totalMonthly').textContent = formatCurrency(totalMonthly);
+            
+            // Update summary
+            document.getElementById('summaryHomePrice').textContent = formatCurrency(homePrice);
+            document.getElementById('summaryDownPayment').textContent = formatCurrency(downPayment);
+            document.getElementById('summaryLoanAmount').textContent = formatCurrency(loanAmount);
+            document.getElementById('summaryInterestRate').textContent = interestRate.toFixed(2);
+            document.getElementById('summaryLoanTerm').textContent = loanTerm;
+            
+            const downPaymentPercent = homePrice > 0 ? (downPayment / homePrice * 100).toFixed(1) : '0.0';
+            document.getElementById('downPaymentPercent').textContent = downPaymentPercent;
+        }
+        
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Input change listeners
+            const inputs = ['homePrice', 'downPayment', 'interestRate', 'loanTerm', 'insurancePercentage', 'insuranceAmount', 'taxPercentage', 'taxAmount'];
+            inputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', updateCalculations);
+            });
+            
+            // Radio button listeners
+            document.querySelectorAll('input[name="insuranceOption"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'percentage') {
+                        document.getElementById('insurancePercentageGroup').style.display = 'block';
+                        document.getElementById('insuranceAmountGroup').style.display = 'none';
+                    } else {
+                        document.getElementById('insurancePercentageGroup').style.display = 'none';
+                        document.getElementById('insuranceAmountGroup').style.display = 'block';
+                    }
+                    updateCalculations();
+                });
+            });
+            
+            document.querySelectorAll('input[name="taxOption"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'percentage') {
+                        document.getElementById('taxPercentageGroup').style.display = 'block';
+                        document.getElementById('taxAmountGroup').style.display = 'none';
+                    } else {
+                        document.getElementById('taxPercentageGroup').style.display = 'none';
+                        document.getElementById('taxAmountGroup').style.display = 'block';
+                    }
+                    updateCalculations();
+                });
+            });
+            
+            // Initial calculation
+            updateCalculations();
+        });
+    </script>
+</body>
+</html>
