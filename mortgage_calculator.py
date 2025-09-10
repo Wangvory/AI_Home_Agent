@@ -33,7 +33,7 @@ def main():
         home_price = st.number_input(
             "Home Price ($)",
             min_value=0.0,
-            value=500000.0,
+            value=1500000.0,
             step=10000.0,
             format="%.0f"
         )
@@ -42,7 +42,7 @@ def main():
             "Down Payment ($)",
             min_value=0.0,
             max_value=home_price,
-            value=100000.0,
+            value=600000.0,
             step=10000.0,
             format="%.0f"
         )
@@ -57,8 +57,8 @@ def main():
             min_value=0.0,
             max_value=20.0,
             value=6.5,
-            step=0.1,
-            format="%.1f"
+            step=0.01,
+            format="%.2f"
         )
         
         loan_term_years = st.selectbox(
@@ -82,7 +82,7 @@ def main():
                 min_value=0.1,
                 max_value=2.0,
                 value=0.5,
-                step=0.1
+                step=0.01
             )
             insurance_annual = home_price * (insurance_percentage / 100)
         else:
@@ -105,8 +105,8 @@ def main():
                 "Property Tax (% of home price)",
                 min_value=0.1,
                 max_value=3.0,
-                value=1.0,
-                step=0.1
+                value=1.25,
+                step=0.01
             )
             tax_annual = home_price * (tax_percentage / 100)
         else:
